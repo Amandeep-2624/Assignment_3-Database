@@ -1,0 +1,59 @@
+-- DataBase ASSIGNMENT - 3
+
+
+1: Fetch all users name from database.
+
+>  SELECT Name FROM user;
+
+
+2: Fetch all tweets of user by user id most recent tweets first.
+
+> SELECT tweetId,userId,content FROM Tweet ORDER BY timestamp DESC;
+
+
+3: Fetch like count of particular tweet by tweet id.
+
+>  SELECT COUNT(*) AS LikeCount
+   FROM Like
+   WHERE TweetID = 1;
+ 
+-- If we want to print like_count of all tweet.
+
+>  SELECT Tweet.TweetId,COUNT(Like.tweetId) AS likes
+   FROM Tweet LEFT JOIN LIKE ON Tweet.TweetId=LIKE.TweetId
+   GROUP BY Tweet.TweetId; 
+
+
+4: Fetch retweet count of particular tweet by tweet id.
+
+>  SELECT COUNT(*) AS RetweetCount
+   FROM Retweet
+   WHERE OriginalTweetID = 2;
+
+
+5: Fetch comment count of particular tweet by tweet id.
+
+> SELECT COUNT(*) AS CommentCount
+  FROM Tweet
+  WHERE CommentID=2
+
+6:Fetch all user’s name who have retweeted particular tweet by tweet id.
+
+>  SELECT user.Name
+   FROM User INNER JOIN Retweet ON user.userID=Retweet.userID
+   WHERE Retweet.originalTweetId=1
+
+7: Fetch all commented tweet’s content for particular tweet by tweet id.
+
+>  SELECT Content AS CommentedTweet FROM
+   Tweet WHERE CommentID=1;
+
+
+8: Fetch user’s timeline (All tweets from users whom I am following with tweet content and user name who has tweeted it)
+
+>  SELECT Tweet.Content, Tweet.Timestamp, User.Name AS TweetedBy
+   FROM Tweet
+   JOIN User ON Tweet.UserID = User.UserID
+   JOIN Follower ON Tweet.UserID = Follower.FollowingUserID
+   WHERE Follower.FollowerUserID = 1 
+   ORDER BY Tweet.Timestamp DESC;
